@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h1>Hello Nuxt.js</h1>
+    <h1>Users 父路由</h1>
+    <nuxt-child/>
   </div>
 </template>
 
 <script>
 export default {
-  name: "HomePage"
+  name: "UsersPage"
 };
 </script>
 
