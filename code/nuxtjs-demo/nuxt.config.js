@@ -1,7 +1,7 @@
 module.exports = {
-  router: {
-    base: '/abc'
-  },
+  // router: {
+  //   base: '/abc'
+  // },
   // routes：一个数组，路由的配置表
   // resolve：解析路由组件的路径
   extendRoutes(routes, resolve) {
