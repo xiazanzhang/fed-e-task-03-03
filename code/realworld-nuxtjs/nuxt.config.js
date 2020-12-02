@@ -1,6 +1,7 @@
 module.exports = {
+  // 配置路由规则
   router: {
-    linkActiveClass:'active',
+    linkActiveClass: 'active',
     // 自定义路由表规则
     extendRoutes(routes, resolve) {
       // 清除 nuxt 基于 pages目录结构默认生成的路由表规则
@@ -48,5 +49,14 @@ module.exports = {
         }
       ])
     }
-  }
+  },
+  server: {
+    host: '0.0.0.0',
+    port: 3000
+  },
+  // 注册插件
+  plugins: [
+    '~/plugins/request.js',
+    '~/plugins/dayjs.js'
+  ]
 }

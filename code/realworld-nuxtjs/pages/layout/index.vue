@@ -37,11 +37,11 @@
           <template v-else>
             <li class="nav-item">
               <!-- <a class="nav-link" href="">Sign in</a> -->
-              <nuxt-link class="nav-link" to="/register">Sign in</nuxt-link>
+              <nuxt-link class="nav-link" to="/login">Sign in</nuxt-link>
             </li>
             <li class="nav-item">
               <!-- <a class="nav-link" href="">Sign up</a> -->
-              <nuxt-link class="nav-link" to="/login">Sign up</nuxt-link>
+              <nuxt-link class="nav-link" to="/register">Sign up</nuxt-link>
             </li>    
           </template>
         </ul>
