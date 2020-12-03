@@ -7,23 +7,47 @@
           <form>
             <fieldset>
               <fieldset class="form-group">
-                <input class="form-control" type="text" placeholder="URL of profile picture">
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="URL of profile picture"
+                  v-model="user.image"
+                >
               </fieldset>
               <fieldset class="form-group">
-                <input class="form-control form-control-lg" type="text" placeholder="Your Name">
+                <input
+                  class="form-control form-control-lg"
+                  type="text"
+                  placeholder="Your Name"
+                  v-model="user.username"
+                >
               </fieldset>
               <fieldset class="form-group">
-                <textarea class="form-control form-control-lg" rows="8" placeholder="Short bio about you"></textarea>
+                <textarea
+                  class="form-control form-control-lg"
+                  rows="8"
+                  placeholder="Short bio about you"
+                  v-model="user.bio"
+                ></textarea>
               </fieldset>
               <fieldset class="form-group">
-                <input class="form-control form-control-lg" type="text" placeholder="Email">
+                <input
+                  class="form-control form-control-lg"
+                  type="text"
+                  placeholder="Email"
+                  v-model="user.email"
+                >
               </fieldset>
               <fieldset class="form-group">
-                <input class="form-control form-control-lg" type="password" placeholder="Password">
+                <input
+                  class="form-control form-control-lg"
+                  type="password"
+                  placeholder="Password"
+                >
               </fieldset>
               <button class="btn btn-lg btn-primary pull-xs-right">
-                  Update Settings
-                </button>
+                Update Settings
+              </button>
             </fieldset>
           </form>
         </div>
@@ -33,12 +57,15 @@
 </template>
 
 <script>
-  export default {
-    middleware:'authenticated',
-    name: 'SettingsIndex'
+import { mapState } from "vuex";
+export default {
+  middleware: "authenticated",
+  name: "SettingsIndex",
+  computed: {
+    ...mapState(["user"])
   }
+};
 </script>
 
 <style>
-
 </style>

@@ -57,29 +57,7 @@
             </ul>
           </div>
           <!-- 文章列表 -->
-          <div class="article-preview" v-for="article in articles" :key="article.slug">
-            <div class="article-meta">
-              <nuxt-link :to="{name:'profile',params:{username:article.author.username}}">
-                <img :src="article.author.image" />
-                <div class="info">
-                  <span class="author">{{article.author.username}}</span>
-                  <span class="date">{{article.createdAt | date('MMM DD, YYYY')}}</span>
-                </div>
-              </nuxt-link>
-              <button 
-                class="btn btn-outline-primary btn-sm pull-xs-right" 
-                :class="{active:article.favorited}"
-                :disabled="article.favoriteDisabled"
-                @click="onFavorite(article)">
-                <i class="ion-heart"></i> {{article.favoritesCount}}
-              </button>
-            </div>
-            <nuxt-link class="preview-link" :to="{name:'article',params:{slug:article.slug}}">
-              <h1>{{article.title}}</h1>
-              <p>{{article.description}}</p>
-              <span>Read more...</span>
-            </nuxt-link>
-          </div>
+          <article-preview :articles="articles"/>
           <!-- 文章列表 -->
           <!-- 分页 -->
           <nav>
@@ -122,14 +100,16 @@
 <script>
 import {
   getArticles,
-  getFeedArticles,
-  deleteFavorite,
-  addFavorite
+  getFeedArticles
 } from "@/api/articles";
 import { getTags } from "@/api/tag";
 import { mapState } from "vuex";
+import ArticlePreview from '@/components/article-preview'
 export default {
   name: "HomeIndex",
+  components:{
+    ArticlePreview
+  },
   async asyncData({ query, store }) {
     const page = Number.parseInt(query.page || 1);
     const limit = 20;
@@ -163,23 +143,6 @@ export default {
     ...mapState(["user"]),
     totalPage() {
       return Math.ceil(this.articlesCount / this.limit);
-    }
-  },
-  methods: {
-    async onFavorite(article) {
-      article.favoriteDisabled = true;
-      if (article.favorited) {
-        // 取消点赞
-        await deleteFavorite(article.slug);
-        article.favorited = false;
-        article.favoritesCount += -1;
-      } else {
-        // 添加点赞
-        await addFavorite(article.slug);
-        article.favorited = true;
-        article.favoritesCount += 1;
-      }
-      article.favoriteDisabled = false;
     }
   }
 };

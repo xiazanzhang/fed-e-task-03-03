@@ -17,3 +17,27 @@ export const register = data => {
     data
   })
 }
+
+// 获取用户信息
+export const profiles = username => {
+  return request({
+    method: "GET",
+    url: `/api/profiles/${username}`
+  })
+}
+
+// 关注用户
+export const follow = username => {
+  return request({
+    method: "POST",
+    url: `/api/profiles/${username}/follow`
+  })
+}
+
+// 取消关注用户
+export const unfollow = username => {
+  return request({
+    method: "DELETE",
+    url: `/api/profiles/${username}/follow`
+  })
+}
