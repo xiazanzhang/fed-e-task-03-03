@@ -18,6 +18,15 @@ export const register = data => {
   })
 }
 
+// 修改用户信息
+export const updateUserInfo = data => {
+  return request({
+    method: "PUT",
+    url: "/api/user",
+    data
+  })
+}
+
 // 获取用户信息
 export const profiles = username => {
   return request({

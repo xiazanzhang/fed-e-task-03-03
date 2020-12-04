@@ -1,19 +1,27 @@
 <template>
   <div>
-    <form class="card comment-form">
+    <form
+      class="card comment-form"
+      @submit.prevent="onPostComment"
+    >
       <div class="card-block">
         <textarea
           class="form-control"
           placeholder="Write a comment..."
           rows="3"
+          v-model="commentContent"
+          :disabled="disabled"
         ></textarea>
       </div>
       <div class="card-footer">
         <img
-          src="http://i.imgur.com/Qr71crq.jpg"
+          :src="user.image"
           class="comment-author-img"
         />
-        <button class="btn btn-sm btn-primary">
+        <button
+          class="btn btn-sm btn-primary"
+          :disabled="disabled"
+        >
           Post Comment
         </button>
       </div>
@@ -59,7 +67,8 @@
 </template>
 
 <script>
-import { getComments } from "@/api/articles";
+import { mapState } from "vuex";
+import { getComments, addComments } from "@/api/articles";
 export default {
   name: "ArticleComments",
   props: {
@@ -68,15 +77,35 @@ export default {
       required: true
     }
   },
+  computed: {
+    ...mapState(["user"])
+  },
   data() {
     return {
-      comments: [] //文章列表
+      comments: [], //文章列表
+      commentContent: "",
+      disabled: false
     };
   },
-  async mounted() {
-    const { data } = await getComments(this.article.slug);
-    this.comments = data.comments;
-    console.log(data);
+  mounted() {
+    this.getCommentsList();
+  },
+  methods: {
+    async getCommentsList() {
+      const { data } = await getComments(this.article.slug);
+      this.comments = data.comments;
+    },
+    async onPostComment() {
+      this.disabled = true;
+      await addComments(this.article.slug, {
+        comment: {
+          body: this.commentContent
+        }
+      });
+      this.disabled = false;
+      this.commentContent = "";
+      this.getCommentsList();
+    }
   }
 };
 </script>
