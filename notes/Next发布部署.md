@@ -15,7 +15,7 @@
 
 ## 手动部署
 
-### 安装环境
+### 安装Node
 
 ```shell
 # 查看环境变量
@@ -24,7 +24,8 @@ echo $PATH
 # 下载nvm  （Node管理工具）
 wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
 
-# 重新连接ssh
+# 安装完成后需要重新连接ssh
+
 # 查看版本号
 nvm --version
 
@@ -214,4 +215,53 @@ pm2 start npm -- start
   ![运行状态](https://s3.ax1x.com/2020/12/05/Dq5jrd.png)
 
 - 访问网站
+
+# Nginx
+
+## 安装Nginx
+
+```shell
+# 安装
+yum install nginx
+
+# 查看安装目录
+which nginx
+
+# 查看版本
+nginx -v
+
+# 启动
+nginx
+
+# 重新启动
+nginx -s reload
+
+# 停止
+nginx -s stop
+
+# 检查配置文件是否ok
+nginx -t
+```
+
+## 配置浏览器缓存
+
+- 缓存的优点
+  - 减少不必要的数据请求，节省带宽
+  - 减少服务器的负担
+  - 用户体验友好
+  - 加快客户端加载网页的速度
+- 缓存的缺点
+  - 如果服务器资源有更改，浏览器无法及时获取最新内容，因为浏览器会先从本地缓存中读取
+
+- 强缓存
+  - 给资源设置一个过期时间，浏览器每次请求都会检查时间是否过期，只有过期才会发送请求到服务器获取最新内容
+  - cache-control：max-age=xxx
+    - no-store 不缓存 
+    - no-cache 不使用强缓存
+- 协商缓存
+  - 浏览器发送请求，服务器检查资源是否发生改变，如果没有改变，返回304，浏览器将从缓存中直接读取，如果变了（etag或者last-modified），返回200，会将最新的内容直接返回
+  - etag
+    - 每个文件都有一个etag，文件内容变了就会改变，唯一的。
+  - last-modified
+    - 文件的修改时间，精确到秒
 
