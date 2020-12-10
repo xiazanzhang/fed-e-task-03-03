@@ -1,3 +1,5 @@
+
+
 # 打包NuxtJS应用
 
 ## 命令
@@ -243,7 +245,7 @@ nginx -s stop
 nginx -t
 ```
 
-## 配置浏览器缓存
+## 浏览器缓存
 
 - 缓存的优点
   - 减少不必要的数据请求，节省带宽
@@ -252,7 +254,6 @@ nginx -t
   - 加快客户端加载网页的速度
 - 缓存的缺点
   - 如果服务器资源有更改，浏览器无法及时获取最新内容，因为浏览器会先从本地缓存中读取
-
 - 强缓存
   - 给资源设置一个过期时间，浏览器每次请求都会检查时间是否过期，只有过期才会发送请求到服务器获取最新内容
   - cache-control：max-age=xxx
@@ -264,4 +265,43 @@ nginx -t
     - 每个文件都有一个etag，文件内容变了就会改变，唯一的。
   - last-modified
     - 文件的修改时间，精确到秒
+- Nginx配置缓存
 
+## Nginx配置
+
+- gzip和etag
+
+  ```yaml
+  http {
+    # 开启gzip
+    gzip on;
+    # 启用gzip压缩的最小文件；小于设置值的文件将不会被压缩
+    gzip_min_length 1k;
+    # gzip 压缩级别 1-10 
+    gzip_comp_level 2;
+    # 进行压缩的文件类型。
+    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;
+    # 是否在http header中添加Vary: Accept-Encoding，建议开启
+    gzip_vary on;
+    # 默认开启
+    etag on;
+  }
+  ```
+
+- 缓存配置
+
+  ```yaml
+  server {
+  	location ~* \.(html)$ {
+      access_log off;
+      add_header  Cache-Control  max-age=no-cache;
+    }
+  
+    location ~* \.(css|js|png|jpg|jpeg|gif|gz|svg|mp4|ogg|ogv|webm|htc|xml|woff)$ {
+      access_log off;
+      add_header    Cache-Control  max-age=360000;
+    }
+  }
+  ```
+
+  
