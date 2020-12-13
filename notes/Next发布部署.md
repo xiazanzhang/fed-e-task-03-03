@@ -13,9 +13,7 @@
 - nuxt generate
   - 编译应用，并根据路由配置生成对应的HTML文件（用于静态站点部署）
 
-# 发布部署
-
-## 手动部署
+# 手动部署
 
 ### 安装Node
 
@@ -217,6 +215,51 @@ pm2 start npm -- start
   ![运行状态](https://s3.ax1x.com/2020/12/05/Dq5jrd.png)
 
 - 访问网站
+
+
+
+# Docker
+
+## 介绍
+
+- Docker 是一个集打包、运行、测试、发布于一体的开放式平台
+- 开发过程中可以把基础设施分离出来部署到 Docker
+  - DevOps：开发、构建、自动化部署、测试、文档
+  - GitLib、Jenkins
+  - Nginx、Apache
+  - MySQL、MongoDb...
+  - 文档管理工具
+- 使用 Docker 可以避免复杂的应用环境配置，并以秒级的速度开启
+- 支持绝大多数平台，容器的性能开销极低
+
+## 应用场景
+
+- Web 应用的自动化打包和发布
+- 自动化测试和持续集成、发布
+- 在服务型环境中部署和调整数据库或其他的后台应用
+
+## 核心概念
+
+- Docker Daemon 守护进程
+  - Docker Daemon 是 Docker 的守护进程
+  - Docker Client 通过命令行与 Docker Daemon 通信完成 Docker 相关操作
+- Docker Client 客户端
+  - 通过终端和用户交互
+  - 终端中输入指令，Docker 客户端把指令传递给 Docker Daemon
+- Docker Image 镜像
+  - 可以认为是一个最小版本的 Linux 系统的镜像，包含了所需的文件系统和一些配置好的应用
+  - 需要通过容器来加载镜像
+  - 是静态的，可以和面向对象中类对比
+- Docker Container 容器
+  - 通过镜像创建一个容器
+  - 可以创建多个容器，每一个容器都会开启一个进程，多个容器之间是相互隔离的
+  - 是动态的，可以和面向对象的实例对比
+
+## 体系架构
+
+- Docker 使用客户端-服务器（C/S）架构模式，使用远程API来管理和创建 Docker 容器
+
+  <img src="https://s3.ax1x.com/2020/12/13/reVlOx.png" alt="体系结构" style="zoom:150%;" />
 
 # Nginx
 
