@@ -218,7 +218,7 @@ pm2 start npm -- start
 
 
 
-# Docker
+# Docker部署
 
 ## 介绍
 
@@ -261,29 +261,113 @@ pm2 start npm -- start
 
   <img src="https://s3.ax1x.com/2020/12/13/reVlOx.png" alt="体系结构" style="zoom:150%;" />
 
+## 与虚拟机的区别
+
+- 虚拟机是硬件级虚拟化，每一个虚拟机内部都需要分割系统资源，需要虚拟出虚拟硬件
+
+- Docker 是系统级虚拟化，容器共享系统资源，不会虚拟出硬件
+
+  ![区别](https://s3.ax1x.com/2020/12/13/rm9BSP.png)
+
+## 常用命令
+
+```bash
+# 启动
+systemctl start docker
+# 停止
+systemctl stop docker
+# 重启
+systemctl restart docker
+# 开机启动
+systemctl enable docker
+# 立即运行并开机启动
+systemctl enable --now docker
+# 在 Docker Hub 查找镜像
+docker search nginx
+# 查看本地镜像
+docker images
+
+# 获取一个镜像
+# 如果指定镜像版本 centos:latest, 默认就是最新版本
+docker pull centos
+# 删除镜像
+docker rmi hello-world
+
+# 以 centos 镜像启动一个容器
+# 参数说明: -i 交互式操作，-t 终端，centos 镜像名称，/bin/bash 镜像运行以后执行的命令 打开终端 
+docker run -it centos /bin/bash
+# 不同镜像的用户是不一样的，启动镜像的参数也不同
+# 参数说明：-d 后台运行，--name nginx-server 容器的名字
+# 说明：-p 映射容器中的端口，宿主机端口:容器端口，nginx 镜像名称
+docker run -d --name nginx-server -p 8080:80 nginx
+
+# 查看所有容器
+# 不加参数 -a 查看所有运行中的容器
+docker ps -a
+# 查看运行中容器的状态
+docker stats
+# 启动容器，参数可以是容器id，或者容器名称
+docker start nginx-server
+# 停止、重启、删除容器
+docker stop nginx-serve
+docker restart nginx-serve
+docker rm -f nginx-serve
+# 清理所有终止的容器
+docker container prune
+# 进入容器
+docker exec -it nginx-server /bin/bash
+# 查看容器内部的日志
+docker logs -f nginx-server
+```
+
+## 部署Nuxt应用
+
+- 创建 Dockerfile
+
+  ```bash
+  # build stage
+  FROM node:lts-alpine as build-stage
+  RUN mkdir -p /app
+  COPY . /app
+  WORKDIR /app
+  RUN npm config set registry https://registry.npm.taobao.org
+  RUN npm install
+  ENV NODE_ENV=production
+  EXPOSE 80
+  CMD  [ "npm","start" ]
+  ```
+
+- 使用 Dockerfile
+
+  ```bash
+  # 使用Dockerfile
+  docker build --rm -t realworld:v1.0 .
+  # 编译过程中如果遇到 npm install 的时候无法解析 npm 的地址，可以使用宿主机的 network
+  docker network ls
+  docker build --network host --rm -t realworld:v1.0 .
+  # 开启容器
+  docker run -itd --name web -p 8082:80 realworld:v1.0
+  # 如果无法正常访问，可尝试进入容器看看
+  docker run -t -i realworld:v1.0 sh
+  ```
+
 # Nginx
 
-## 安装Nginx
+## 安装
 
 ```shell
 # 安装
 yum install nginx
-
 # 查看安装目录
 which nginx
-
 # 查看版本
 nginx -v
-
 # 启动
 nginx
-
 # 重新启动
 nginx -s reload
-
 # 停止
 nginx -s stop
-
 # 检查配置文件是否ok
 nginx -t
 ```
@@ -347,4 +431,4 @@ nginx -t
   }
   ```
 
-  
+
